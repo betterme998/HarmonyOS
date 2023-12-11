@@ -1,17 +1,41 @@
+// @Entry
+// @Component
+// struct Index {
+//   @State message: string = 'Hello World'
+//
+//   build() {
+//     Row() {
+//       Column() {
+//         Text(this.message)
+//           .fontSize(50)
+//           .fontWeight(FontWeight.Bold)
+//       }
+//       .width('100%')
+//     }
+//     .height('100%')
+//   }
+// }
+// xxx.ets
+import web_webview from '@ohos.web.webview';
+
 @Entry
 @Component
-struct Index {
-  @State message: string = 'Hello World'
+struct WebComponent {
+  webviewController: web_webview.WebviewController = new web_webview.WebviewController();
 
   build() {
-    Row() {
-      Column() {
-        Text(this.message)
-          .fontSize(50)
-          .fontWeight(FontWeight.Bold)
-      }
-      .width('100%')
+    Column() {
+      Button('loadUrl')
+        .onClick(() => {
+          try {
+            // 点击按钮时，通过loadUrl，跳转到local1.html
+            this.webviewController.loadUrl($rawfile("local.html"));
+          } catch (error) {
+            console.error(`ErrorCode: ${error.code},  Message: ${error.message}`);
+          }
+        })
+      // 组件创建时，通过$rawfile加载本地文件local.html
+      Web({ src: $rawfile("local.html"), controller: this.webviewController })
     }
-    .height('100%')
   }
 }
